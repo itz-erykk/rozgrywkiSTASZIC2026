@@ -1,0 +1,1 @@
+# rozgrywkiSTASZIC2026
