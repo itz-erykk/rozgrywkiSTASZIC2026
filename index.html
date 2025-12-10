@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rozgrywki Międzyklasowe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="school-header">
+            <div class="logo-container">
+                <div class="logo-placeholder">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="title-container">
+                    <h1 id="pageTitle">Rozgrywki Międzyklasowe 2024</h1>
+                    <p class="school-name" id="schoolName">Liceum Ogólnokształcące</p>
+                </div>
+            </div>
+            <div class="current-date">
+                <i class="far fa-calendar-alt"></i>
+                <span id="currentDate"></span>
+            </div>
+        </div>
+        
+        <!-- NAVIGACJA (UPROSZCZONA) -->
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="index.html" class="active"><i class="fas fa-home"></i> Strona główna</a></li>
+                
+                <!-- DROPDOWN DYSCYPLINY -->
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-futbol"></i> Dyscypliny <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="pilka-nozna.html"><i class="fas fa-futbol"></i> Piłka nożna</a>
+                        <a href="siatkowka.html"><i class="fas fa-volleyball-ball"></i> Siatkówka</a>
+                        <a href="koszykowka.html"><i class="fas fa-basketball-ball"></i> Koszykówka</a>
+                    </div>
+                </li>
+                
+                <li><a href="druzyny.html"><i class="fas fa-users"></i> Drużyny</a></li>
+                <li><a href="dokumenty.html"><i class="fas fa-file-alt"></i> Dokumenty</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- GŁÓWNA ZAWARTOŚĆ -->
+    <main class="container">
+        <!-- BANER -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2 id="heroTitle"><i class="fas fa-trophy"></i> Witamy w rozgrywkach!</h2>
+                <p id="heroSubtitle">Śledź na żywo wyniki i klasyfikację drużyn</p>
+                
+                <div class="countdown-container">
+                    <h3><i class="far fa-clock"></i> Do początku rozgrywek:</h3>
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <span id="days">00</span>
+                            <small>Dni</small>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="hours">00</span>
+                            <small>Godz</small>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="minutes">00</span>
+                            <small>Min</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAJBLIŻSZE MECZE -->
+        <section class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-calendar-day"></i> Najbliższe mecze</h2>
+                <button onclick="loadMatches()" class="btn-refresh">
+                    <i class="fas fa-sync-alt"></i> Odśwież
+                </button>
+            </div>
+            
+            <div class="matches-grid" id="matchesContainer">
+                <!-- Mecze wczytają się tutaj -->
+            </div>
+            
+            <div id="noMatchesMessage" class="empty-state" style="display: none;">
+                <i class="far fa-calendar-times"></i>
+                <p>Brak nadchodzących meczów</p>
+            </div>
+        </section>
+
+        <!-- KLASYFIKACJA GENERALNA -->
+        <section class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-medal"></i> Klasyfikacja generalna</h2>
+                <div class="last-update">
+                    Ostatnia aktualizacja: <span id="lastUpdateTime">-</span>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table class="sports-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Drużyna</th>
+                            <th>PN</th>
+                            <th>KOSZ</th>
+                            <th>SIATA</th>
+                            <th>SUMA</th>
+                        </tr>
+                    </thead>
+                    <tbody id="standingsTable">
+                        <!-- Ranking wczyta się tutaj -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div id="noStandingsMessage" class="empty-state" style="display: none;">
+                <i class="far fa-frown"></i>
+                <p>Brak danych klasyfikacji</p>
+            </div>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="legend-color" style="background: gold;"></span>
+                    <span>Mistrzostwo</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color" style="background: #00b0ff;"></span>
+                    <span>Faza pucharowa</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PODSUMOWANIE DYSCYPLIN -->
+        <section class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-line"></i> Podsumowanie dyscyplin</h2>
+                <div class="sports-stats-header" id="sportsStatsHeader">
+                    <!-- Statystyki główne -->
+                </div>
+            </div>
+            
+            <div class="sports-grid">
+                <!-- Piłka nożna -->
+                <div class="sport-card" id="footballCard">
+                    <div class="sport-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3>Piłka nożna</h3>
+                    <div class="sport-stats">
+                        <div class="stat">
+                            <span class="stat-value" id="footballMatches">0</span>
+                            <span class="stat-label">Mecze</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="footballGoals">0</span>
+                            <span class="stat-label">Bramki</span>
+                        </div>
+                    </div>
+                    <a href="pilka-nozna.html" class="btn-sport">
+                        Zobacz więcej <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Siatkówka -->
+                <div class="sport-card" id="volleyballCard">
+                    <div class="sport-icon">
+                        <i class="fas fa-volleyball-ball"></i>
+                    </div>
+                    <h3>Siatkówka</h3>
+                    <div class="sport-stats">
+                        <div class="stat">
+                            <span class="stat-value" id="volleyballMatches">0</span>
+                            <span class="stat-label">Mecze</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="volleyballSets">0</span>
+                            <span class="stat-label">Sety</span>
+                        </div>
+                    </div>
+                    <a href="siatkowka.html" class="btn-sport">
+                        Zobacz więcej <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Koszykówka -->
+                <div class="sport-card" id="basketballCard">
+                    <div class="sport-icon">
+                        <i class="fas fa-basketball-ball"></i>
+                    </div>
+                    <h3>Koszykówka</h3>
+                    <div class="sport-stats">
+                        <div class="stat">
+                            <span class="stat-value" id="basketballMatches">0</span>
+                            <span class="stat-label">Mecze</span>
+                        </div>
+                        <div class="stat">
+                            <span class="stat-value" id="basketballPoints">0</span>
+                            <span class="stat-label">Punkty</span>
+                        </div>
+                    </div>
+                    <a href="koszykowka.html" class="btn-sport">
+                        Zobacz więcej <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- OGŁOSZENIA -->
+        <section class="section announcements">
+            <div class="section-header">
+                <h2><i class="fas fa-bullhorn"></i> Ogłoszenia</h2>
+                <button onclick="toggleAnnouncements()" class="btn-refresh">
+                    <i class="fas fa-eye"></i> <span id="toggleAnnouncementsText">Ukryj</span>
+                </button>
+            </div>
+            
+            <div class="announcements-list" id="announcementsList">
+                <!-- Ogłoszenia wczytają się tutaj -->
+            </div>
+            
+            <div id="noAnnouncementsMessage" class="empty-state" style="display: none;">
+                <i class="far fa-bell-slash"></i>
+                <p>Brak ogłoszeń</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- STOPKA -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><i class="fas fa-university"></i> Organizator</h4>
+                <p id="organizerName">Samorząd Uczniowski</p>
+                <p id="supervisorName">Opiekun: mgr Anna Nowak</p>
+            </div>
+            
+            <div class="footer-section">
+                <h4><i class="fas fa-sync-alt"></i> Aktualizacja</h4>
+                <button onclick="refreshAllData()" class="btn-refresh-large">
+                    <i class="fas fa-sync-alt"></i> Odśwież dane
+                </button>
+                <p class="footer-hint">Kliknij, aby załadować najnowsze dane</p>
+                <p class="footer-hint"><small>Wersja: <span id="appVersion">1.0</span></small></p>
+            </div>
+            
+            
+        </div>
+        
+        <div class="footer-bottom">
+            <p id="copyrightText">© 2025 Rozgrywki Międzyklasowe. Wszystkie prawa zastrzeżone.</p>
+            <p class="version">System rozgrywek v<span id="systemVersion">1.0</span></p>
+        </div>
+    </footer>
+
+    <!-- SKRYPTY -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

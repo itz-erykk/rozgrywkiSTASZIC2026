@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drużyny - Rozgrywki Międzyklasowe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- HEADER (taki sam jak na stronie głównej) -->
+    <header>
+        <div class="school-header">
+            <div class="logo-container">
+                <div class="logo-placeholder">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="title-container">
+                    <h1 id="pageTitle">Drużyny - Rozgrywki Międzyklasowe</h1>
+                    <p class="school-name" id="schoolName">Liceum Ogólnokształcące</p>
+                </div>
+            </div>
+            <div class="current-date">
+                <i class="far fa-calendar-alt"></i>
+                <span id="currentDate"></span>
+            </div>
+        </div>
+        
+        <!-- NAVIGACJA -->
+        <nav class="main-nav">
+            <ul class="nav-list">
+                <li><a href="index.html"><i class="fas fa-home"></i> Strona główna</a></li>
+                
+                <!-- DROPDOWN DYSCYPLINY -->
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-futbol"></i> Dyscypliny <i class="fas fa-chevron-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="pilka-nozna.html"><i class="fas fa-futbol"></i> Piłka nożna</a>
+                        <a href="siatkowka.html"><i class="fas fa-volleyball-ball"></i> Siatkówka</a>
+                        <a href="koszykowka.html"><i class="fas fa-basketball-ball"></i> Koszykówka</a>
+                    </div>
+                </li>
+                
+                <li><a href="druzyny.html" class="active"><i class="fas fa-users"></i> Drużyny</a></li>
+                <li><a href="dokumenty.html"><i class="fas fa-file-alt"></i> Dokumenty</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- GŁÓWNA ZAWARTOŚĆ -->
+    <main class="container">
+        <!-- NAGŁÓWEK -->
+        <section class="hero">
+            <div class="hero-content">
+                <h2><i class="fas fa-users"></i> Wszystkie drużyny</h2>
+                <p>Poznaj skład, kapitanów i osiągnięcia każdej drużyny</p>
+                
+                <div class="teams-summary">
+                    <div class="summary-item">
+                        <i class="fas fa-flag"></i>
+                        <span id="totalTeams">0</span>
+                        <small>Drużyn</small>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-user-friends"></i>
+                        <span id="totalPlayers">0</span>
+                        <small>Zawodników</small>
+                    </div>
+                    <div class="summary-item">
+                        <i class="fas fa-trophy"></i>
+                        <span id="championTeam">-</span>
+                        <small>Aktualny mistrz</small>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FILTRY I WYSZUKIWARKA -->
+        <section class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-filter"></i> Filtruj drużyny</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="teamSearch" placeholder="Szukaj drużyny lub klasy..." onkeyup="filterTeams()">
+                </div>
+            </div>
+            
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="classFilter"><i class="fas fa-graduation-cap"></i> Klasa:</label>
+                    <select id="classFilter" onchange="filterTeams()">
+                        <option value="all">Wszystkie klasy</option>
+                        <!-- Opcje wczyta się dynamicznie -->
+                    </select>
+                </div>
+                
+                <button onclick="resetFilters()" class="btn-refresh">
+                    <i class="fas fa-redo"></i> Wyczyść filtry
+                </button>
+            </div>
+        </section>
+
+        <!-- LISTA DRUŻYN -->
+        <section class="section">
+            <div class="section-header">
+                <h2><i class="fas fa-list"></i> Lista drużyn</h2>
+                <div class="view-toggle">
+                    <button id="gridViewBtn" class="view-btn active" onclick="setViewMode('grid')">
+                        <i class="fas fa-th-large"></i> Kafelki
+                    </button>
+                    <button id="listViewBtn" class="view-btn" onclick="setViewMode('list')">
+                        <i class="fas fa-list"></i> Lista
+                    </button>
+                </div>
+            </div>
+            
+            <!-- KOMUNIKAT BRAKU DRUŻYN -->
+            <div id="noTeamsMessage" class="empty-state" style="display: none;">
+                <i class="far fa-frown"></i>
+                <p>Nie znaleziono drużyn spełniających kryteria</p>
+                <button onclick="resetFilters()" class="btn-sport">Wyczyść filtry</button>
+            </div>
+            
+            <!-- WIDOK KAFELKOWY -->
+            <div class="teams-grid" id="teamsGridContainer">
+                <!-- Drużyny wczytają się tutaj -->
+            </div>
+            
+            <!-- WIDOK LISTY -->
+            <div class="teams-list" id="teamsListContainer" style="display: none;">
+                <table class="sports-table">
+                    <thead>
+                        <tr>
+                            <th>Drużyna</th>
+                            <th>Klasa</th>
+                            <th>Dyscypliny</th>
+                            <th>Kapitan</th>
+                            <th>Zawodnicy</th>
+                            <th>Punkty</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody id="teamsListTable">
+                        <!-- Lista wczyta się tutaj -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- PAGINACJA -->
+            <div class="pagination" id="pagination" style="display: none;">
+                <button onclick="changePage(-1)" class="page-btn"><i class="fas fa-chevron-left"></i></button>
+                <span id="pageInfo">Strona 1 z 1</span>
+                <button onclick="changePage(1)" class="page-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </section>
+
+        <!-- DRUŻYNA SZCZEGÓŁOWO (MODAL) -->
+        <div class="modal" id="teamModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTeamName">Nazwa drużyny</h3>
+                    <button onclick="closeModal()" class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="team-details">
+                        <!-- Szczegóły wczytają się tutaj -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- STOPKA -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4><i class="fas fa-university"></i> Organizator</h4>
+                <p id="organizerName">Samorząd Uczniowski</p>
+            </div>
+            
+            <div class="footer-section">
+                <button onclick="window.location.href='index.html'" class="btn-refresh-large">
+                    <i class="fas fa-home"></i> Strona główna
+                </button>
+            </div>
+            
+            <div class="footer-section">
+                <h4><i class="fas fa-envelope"></i> Kontakt</h4>
+                <p><i class="fas fa-at"></i> <span id="contactEmail">rozgrywki@szkola.pl</span></p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p id="copyrightText">© 2024 Rozgrywki Międzyklasowe</p>
+        </div>
+    </footer>
+
+    <!-- SKRYPTY -->
+    <script src="js/data.js"></script>
+    <script src="js/druzyny.js"></script>
+</body>
+</html>
